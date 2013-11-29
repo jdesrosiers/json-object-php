@@ -1,0 +1,22 @@
+{
+    "name": "jdesrosiers/json-object-php",
+    "require-dev": {
+        "phpunit/phpunit": "~3.7.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jason Desrosiers",
+            "email": "jdesrosi@gmail.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "psr-0": {
+            "JDesrosiers\\": "src/",
+            "GeraintLuff\\": "src/"
+        }
+    }
+}
