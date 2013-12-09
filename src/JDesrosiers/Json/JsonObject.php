@@ -36,10 +36,16 @@ class JsonObject implements \ArrayAccess
         } catch (Exception $e) {
             throw new \InvalidArgumentException($e->getMessage(), $e->getCode, $e);
         }
+
+        $this->setValue($value);
     }
 
     public function __set($offset, $newval)
     {
+        if ($newval instanceof self) {
+            $newval = $newval->getValue();
+        }
+
         if (!is_object($this->value)) {
             throw new \InvalidArgumentException("Cannot use value as an object");
         }
@@ -63,11 +69,6 @@ class JsonObject implements \ArrayAccess
         }
 
         return new self($this->value->$offset, $schema);
-    }
-
-    public function getValue()
-    {
-        return $this->value;
     }
 
     public function offsetExists($offset)
@@ -95,6 +96,10 @@ class JsonObject implements \ArrayAccess
 
     public function offsetSet($offset, $newval)
     {
+        if ($newval instanceof self) {
+            $newval = $newval->getValue();
+        }
+
         if (!is_array($this->value)) {
             throw new \InvalidArgumentException("Cannot use value as an array");
         }
@@ -145,5 +150,20 @@ class JsonObject implements \ArrayAccess
             }
             throw new \InvalidArgumentException(print_r($message, true));
         }
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function setValue($newval)
+    {
+        if ($newval instanceof self) {
+            $newval = $newval->getValue();
+        }
+
+        $this->validate($newval);
+        $this->value = $newval;
     }
 }

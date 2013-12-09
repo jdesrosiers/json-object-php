@@ -84,11 +84,11 @@ class SchemaStore {
 		}
 
 		$result = "";
-		if ($baseParts['scheme']) {
+		if (array_key_exists("scheme", $baseParts)) {
 			$result .= $baseParts['scheme']."://";
-			if ($baseParts['user']) {
+			if (array_key_exists("user", $baseParts)) {
 				$result .= ":".$baseParts['user'];
-				if ($baseParts['pass']) {
+				if (array_key_exists("pass", $baseParts)) {
 					$result .= ":".$baseParts['pass'];
 				}
 				$result .= "@";
@@ -99,10 +99,10 @@ class SchemaStore {
 			}
 		}
 		$result .= $baseParts["path"];
-		if ($baseParts['query']) {
+		if (array_key_exists("query", $baseParts)) {
 			$result .= "?".$baseParts['query'];
 		}
-		if ($baseParts['fragment']) {
+		if (array_key_exists("fragment", $baseParts)) {
 			$result .= "#".$baseParts['fragment'];
 		}
 		return $result;
@@ -124,7 +124,7 @@ class SchemaStore {
 		$trustBase = $trustBase[0];
 
 		$this->schemas[$url] =& $schema;
-		$this->normaliseSchema($url, $schema, $trusted ? TRUE : $trustBase);
+		$this->normalizeSchema($url, $schema, $trusted ? TRUE : $trustBase);
 		if ($fragment == "") {
 			$this->schemas[$baseUrl] = $schema;
 		}
@@ -139,7 +139,7 @@ class SchemaStore {
 		}
 	}
 
-	private function normaliseSchema($url, &$schema, $trustPrefix) {
+	private function normalizeSchema($url, &$schema, $trustPrefix) {
 		if (is_array($schema) && !self::isNumericArray($schema)) {
 			$schema = (object)$schema;
 		}
@@ -170,12 +170,12 @@ class SchemaStore {
 			}
 			foreach ($schema as $key => &$value) {
 				if ($key != "enum") {
-					self::normaliseSchema($url, $value, $trustPrefix);
+					self::normalizeSchema($url, $value, $trustPrefix);
 				}
 			}
 		} else if (is_array($schema)) {
 			foreach ($schema as &$value) {
-				self::normaliseSchema($value);
+				self::normalizeSchema($url, $value, $trustPrefix);
 			}
 		}
 	}
