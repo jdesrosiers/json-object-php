@@ -12,8 +12,6 @@ class JsonObject implements \ArrayAccess
 
     public function __construct($value, $schema)
     {
-        $this->value = $value;
-
         if (is_string($schema)) {
             if ($schema[0] !== "{") {
                 $schema = file_get_contents($schema);
@@ -63,12 +61,35 @@ class JsonObject implements \ArrayAccess
             throw new \InvalidArgumentException("Cannot use value as an object");
         }
 
-        $schema = $this->schemaStore->get("self#/properties/$offset");
-        if ($schema === null) {
-            $schema = new \stdClass();
-        }
+        $schema = $this->schemaStore->get("self#/properties/$offset") ?: new \stdClass();
 
         return new self($this->value->$offset, $schema);
+    }
+
+    public function __isset($name)
+    {
+        if (!is_object($this->value)) {
+            throw new \InvalidArgumentException("Cannot use value as an object");
+        }
+
+        return isset($this->value->$name);
+    }
+
+    public function __unset($name)
+    {
+        if (!is_object($this->value)) {
+            throw new \InvalidArgumentException("Cannot use value as an object");
+        }
+
+        if (!property_exists($this->value, $name)) {
+            return;
+        }
+
+        $value = unserialize(serialize($this->value));
+        unset($value->$name);
+
+        $this->validate($value);
+        unset($this->value->$name);
     }
 
     public function offsetExists($offset)
@@ -86,10 +107,7 @@ class JsonObject implements \ArrayAccess
             throw new \InvalidArgumentException("Cannot use value as an array");
         }
 
-        $schema = $this->schemaStore->get("self#/items");
-        if ($schema === null) {
-            $schema = new \stdClass();
-        }
+        $schema = $this->schemaStore->get("self#/items") ?: new \stdClass();
 
         return new self($this->value[$offset], $schema);
     }
@@ -126,7 +144,7 @@ class JsonObject implements \ArrayAccess
         }
 
         if (!array_key_exists($offset, $this->value)) {
-            throw new \InvalidArgumentException("Array item does not exist");
+            return true;
         }
 
         if ($offset !== count($this->value) - 1) {
@@ -157,7 +175,7 @@ class JsonObject implements \ArrayAccess
         return $this->value;
     }
 
-    public function setValue($newval)
+    public function setValue(&$newval)
     {
         if ($newval instanceof self) {
             $newval = $newval->getValue();
