@@ -2,8 +2,8 @@
 
 namespace JDesrosiers\Json;
 
-use GeraintLuff\Jsv4\Jsv4;
-use GeraintLuff\Jsv4\SchemaStore;
+use Jsv4;
+use SchemaStore;
 
 class JsonObject implements \ArrayAccess
 {
@@ -31,7 +31,7 @@ class JsonObject implements \ArrayAccess
         try {
             $this->schemaStore = new SchemaStore();
             $this->schemaStore->add("self", $schema);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new \InvalidArgumentException($e->getMessage(), $e->getCode, $e);
         }
 

@@ -4,7 +4,7 @@ namespace JDesrosiers\Tests\Json;
 
 use JDesrosiers\Json\JsonObject;
 
-require __DIR__ . "/../../../../vendor/autoload.php";
+require __DIR__ . "/../../vendor/autoload.php";
 
 class JsonObjectTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +20,7 @@ class JsonObjectTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetProperty($schema, $value)
     {
-        $json = new JsonObject(new \stdClass(), "file://" . realpath(__DIR__ . "/../../../schemas/$schema.json"));
+        $json = new JsonObject(new \stdClass(), "file://" . realpath(__DIR__ . "/../schemas/$schema.json"));
         $json->key = $value;
 
         $this->assertInstanceOf("JDesrosiers\Json\JsonObject", $json->key);
@@ -44,7 +44,7 @@ class JsonObjectTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetPropertyFail($schema, $value)
     {
-        $json = new JsonObject(new \stdClass(), "file://" . realpath(__DIR__ . "/../../../schemas/$schema.json"));
+        $json = new JsonObject(new \stdClass(), "file://" . realpath(__DIR__ . "/../schemas/$schema.json"));
         $json->key = $value;
     }
 
@@ -66,7 +66,7 @@ class JsonObjectTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAdditionalProperties($schema, $value)
     {
-        $json = new JsonObject(new \stdClass(), "file://" . realpath(__DIR__ . "/../../../schemas/$schema.json"));
+        $json = new JsonObject(new \stdClass(), "file://" . realpath(__DIR__ . "/../schemas/$schema.json"));
         $json->key2 = $value;
 
         $this->assertInstanceOf("JDesrosiers\Json\JsonObject", $json->key2);
@@ -96,7 +96,7 @@ class JsonObjectTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAdditionalPropertiesFail($schema, $value)
     {
-        $json = new JsonObject(new \stdClass(), "file://" . realpath(__DIR__ . "/../../../schemas/$schema.json"));
+        $json = new JsonObject(new \stdClass(), "file://" . realpath(__DIR__ . "/../schemas/$schema.json"));
         $json->key2 = $value;
     }
 
@@ -109,7 +109,7 @@ class JsonObjectTest extends \PHPUnit_Framework_TestCase
         $data = new \stdClass();
         $data->key = "value";
 
-        $json = new JsonObject($data, "file://" . realpath(__DIR__ . "/../../../schemas/$schema.json"));
+        $json = new JsonObject($data, "file://" . realpath(__DIR__ . "/../schemas/$schema.json"));
         $json["key"];
     }
 
@@ -118,7 +118,7 @@ class JsonObjectTest extends \PHPUnit_Framework_TestCase
         $schema = "array";
         $value = "value";
 
-        $json = new JsonObject(array(), "file://" . realpath(__DIR__ . "/../../../schemas/$schema.json"));
+        $json = new JsonObject(array(), "file://" . realpath(__DIR__ . "/../schemas/$schema.json"));
         $json[0] = $value;
 
         $this->assertInstanceOf("JDesrosiers\Json\JsonObject", $json[0]);
@@ -130,7 +130,7 @@ class JsonObjectTest extends \PHPUnit_Framework_TestCase
         $schema = "array";
         $value = "value";
 
-        $json = new JsonObject(array(), "file://" . realpath(__DIR__ . "/../../../schemas/$schema.json"));
+        $json = new JsonObject(array(), "file://" . realpath(__DIR__ . "/../schemas/$schema.json"));
         $json[] = $value;
 
         $this->assertInstanceOf("JDesrosiers\Json\JsonObject", $json[0]);

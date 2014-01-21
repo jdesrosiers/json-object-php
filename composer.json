@@ -1,8 +1,7 @@
 {
     "name": "jdesrosiers/json-object-php",
-    "require-dev": {
-        "phpunit/phpunit": "~3.7.0"
-    },
+    "description": "A JSON Schema driven data-type",
+    "keywords": ["JSON Schema", "JsonObject", "jdesrosiers", "Jason Desrosiers"],
     "license": "MIT",
     "authors": [
         {
@@ -11,12 +10,14 @@
         }
     ],
     "require": {
-
+        "geraintluff/jsv4": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~3.7.0"
     },
     "autoload": {
-        "psr-0": {
-            "JDesrosiers\\": "src/",
-            "GeraintLuff\\": "src/"
+        "psr-4": {
+            "JDesrosiers\\": "src/"
         }
     }
 }
